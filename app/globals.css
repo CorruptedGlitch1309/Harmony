@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #c2c2c2;
+  --foreground: #000000;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.no-anchor * {
+  overflow-anchor: none;
+}
+
+.anchor {
+  overflow-anchor: auto;
+  height: 1px;
+}
+
+.selected-server::after {
+  content: "";
+  display: block;
+  position: relative;
+  width: 0.25rem;
+  height: 60%;
+  background-color: white;
+  top: -80%;
+  left: 0;
+  z-index: 20;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.server:hover:not(.selected-server)::after {
+  content: "";
+  display: block;
+  position: relative;
+  width: 0.25rem;
+  height: 25%;
+  background-color: white;
+  top: -62.5%;
+  left: 0;
+  z-index: 20;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.server:hover::before {
+  content: attr(id);
+  display: block;
+  position: absolute;
+  background-color: white;
+  width: 180%;
+  top: 25%;
+  left: 120%;
+  z-index: 20;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+}

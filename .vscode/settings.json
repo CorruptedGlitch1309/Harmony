@@ -1,0 +1,30 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 4000,
+            "driver": "PostgreSQL",
+            "name": "databasequery",
+            "database": "dvdrental",
+            "username": "postgres",
+            "password": "(MF7F*#lx)P8",
+            "connectionTimeout": 30
+        },
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "us-east-1.sql.xata.sh",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Authentication",
+            "username": "kb0q9q",
+            "password": "xau_1WyQD4FD8u3QG8Z2cjYxeGsaGDbAh3Lb1",
+            "database": "Authentication:main"
+        }
+    ]
+}

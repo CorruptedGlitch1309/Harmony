@@ -1,0 +1,24 @@
+{
+  "done": true,
+  "migration": {
+    "name": "mig_ctu6crj2vtkja3ivg7r0",
+    "operations": [
+      {
+        "add_column": {
+          "up": "''",
+          "table": "users",
+          "column": {
+            "name": "username",
+            "type": "text",
+            "comment": ""
+          }
+        }
+      }
+    ]
+  },
+  "migrationType": "pgroll",
+  "name": "mig_ctu6crj2vtkja3ivg7r0",
+  "parent": "mig_ctu6cc1901h3pf6vl3fg",
+  "schema": "public",
+  "startedAt": "2025-01-06T23:25:34.410782Z"
+}
