@@ -19,7 +19,7 @@ import {
 } from "../lib/redux/hooks";
 import useSWR from "swr";
 import Menu from "../ui/communication/menu";
-import { postNewUser } from "../lib/server_actions";
+import { requestMainData } from "../lib/SWR/requests";
 
 function page() {
   const { user } = useUser();
@@ -31,12 +31,17 @@ function page() {
   const dispatch = useDispatch();
   const selectedServer = useSelector((state: state) => state.selectedServer);
   const selectedChannel = useSelector((state: state) => state.selectedChannel);
-  const servers = useSelector((state: state) => state.servers);
   const selectedChannelInfo = useSelector(
     (state: state) => state.selectedChannelInfo
   );
 
-  const { data, isLoading, mutate } = useSWR(
+  const { data, isLoading, mutateMain } = requestMainData({
+    user: user?.id,
+    selectedServer: selectedServer,
+    selectedChannel: selectedChannel,
+  });
+
+  const { mutate } = useSWR(
     {
       url: "/api/data",
       payload: {
@@ -94,12 +99,12 @@ function page() {
 
   return (
     <div className="fixed w-screen h-screen flex flex-row">
-      <div className="w-3/12 flex">
+      <div className="w-4/12 max-w-60 flex">
         <ServerList openDialog={setDialog} />
-        <ChannelList mutate={mutate} />
+        <ChannelList />
       </div>
 
-      <div className="w-9/12 h-screen flex flex-col justify-between">
+      <div className="w-full h-screen flex flex-col justify-between">
         <div className="bg-gray-400 h-6 w-full px-2">
           {!selectedChannelInfo ? "" : selectedChannelInfo.channel_name}
         </div>
@@ -108,14 +113,14 @@ function page() {
       </div>
 
       {selectedDialog == "AddServer" ? (
-        <AddServer open={true} setDialog={setDialog} mutate={mutate} />
+        <AddServer open={true} setDialog={setDialog} />
       ) : selectedDialog === "CreateServer" ? (
-        <CreateServer open={true} setDialog={setDialog} mutate={mutate} />
+        <CreateServer open={true} setDialog={setDialog} />
       ) : (
         <></>
       )}
 
-      <Menu menuOpen={menuOpen} server_id={clickedServer} mutate={mutate} />
+      <Menu menuOpen={menuOpen} server_id={clickedServer} />
     </div>
   );
 }

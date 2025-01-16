@@ -1,15 +1,19 @@
 import { createServer, fetcher } from "@/app/lib/data";
 import { state } from "@/app/lib/redux/types";
+import { requestMainData } from "@/app/lib/SWR/requests";
 import { useUser } from "@clerk/nextjs";
 import { useSelector } from "react-redux";
 
-function CreateChannel(props: {
-  open: boolean;
-  setDialog: Function;
-  mutate: Function;
-}) {
+function CreateChannel(props: { open: boolean; setDialog: Function }) {
   const { user } = useUser();
   const selectedServer = useSelector((state: state) => state.selectedServer);
+  const selectedChannel = useSelector((state: state) => state.selectedChannel);
+
+  const { mutateMain } = requestMainData({
+    user: user?.id,
+    selectedServer: selectedServer,
+    selectedChannel: selectedChannel,
+  });
 
   async function handlePost(key: {
     url: string;
@@ -17,7 +21,7 @@ function CreateChannel(props: {
     method: string | undefined;
   }) {
     await fetcher(key);
-    props.mutate();
+    mutateMain();
   }
 
   return (

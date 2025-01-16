@@ -1,12 +1,20 @@
 import { fetcher } from "@/app/lib/data";
+import { state } from "@/app/lib/redux/types";
+import { requestMainData } from "@/app/lib/SWR/requests";
 import { useUser } from "@clerk/nextjs";
+import { useSelector } from "react-redux";
 
-function CreateServer(props: {
-  open: boolean;
-  setDialog: Function;
-  mutate: Function;
-}) {
+function CreateServer(props: { open: boolean; setDialog: Function }) {
   const { user } = useUser();
+
+  const selectedServer = useSelector((state: state) => state.selectedServer);
+  const selectedChannel = useSelector((state: state) => state.selectedChannel);
+
+  const { mutateMain } = requestMainData({
+    user: user?.id,
+    selectedServer: selectedServer,
+    selectedChannel: selectedChannel,
+  });
 
   async function createServer(server_name: string, channel_name: string) {
     await fetcher({
@@ -14,7 +22,7 @@ function CreateServer(props: {
       payload: { user_id: user?.id, server_name, channel_name },
       method: "POST",
     });
-    props.mutate();
+    mutateMain;
   }
 
   return (

@@ -1,23 +1,22 @@
 import { fetcher } from "@/app/lib/data";
+import { setMessages } from "@/app/lib/redux/hooks";
 import { state } from "@/app/lib/redux/types";
+import { requestMessages } from "@/app/lib/SWR/requests";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 
 function MessageContainer() {
+  const dispatch = useDispatch();
   const selectedChannel = useSelector((state: state) => state.selectedChannel);
-  const { data, error, isLoading, mutate } = useSWR(
-    {
-      url: "/api/messages",
-      payload: selectedChannel,
-    },
-    fetcher,
-    { refreshInterval: 1000 }
-  );
+  const messages = useSelector((state: state) => state.messages);
+
+  const { messagesData, error, isLoading } = requestMessages(selectedChannel);
 
   useEffect(() => {
     if (isLoading) return;
+    dispatch(setMessages(messagesData));
     const div = document.getElementById("scrolling");
     div?.scrollTo({ top: div?.scrollHeight });
   });
@@ -28,7 +27,7 @@ function MessageContainer() {
   return (
     <div id="scrolling" className="grow overflow-y-auto no-anchor px-1">
       <div className="h-full" />
-      {...data.map((message: any) => {
+      {...messages.map((message: any) => {
         return (
           <div className="w-full flex">
             <img

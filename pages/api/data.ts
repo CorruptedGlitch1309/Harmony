@@ -20,7 +20,13 @@ async function fetchServers(
 
         if (!queryServers[0]) {
             client.release();
-            return { success: false }
+            return {
+                success: false,
+                server_data: [],
+                channels: [],
+                selectedChannel: "none",
+                selectedServer: "none",
+            }
         }
 
         const servers = queryServers[0].servers.servers;

@@ -1,14 +1,12 @@
-import { setChannels, setSelectedChannel } from "@/app/lib/redux/hooks";
+import { setSelectedChannel } from "@/app/lib/redux/hooks";
 import { state } from "@/app/lib/redux/types";
 import { useDispatch, useSelector } from "react-redux";
 import CreateChannel from "./createchannel";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import { channelsData, fetcher } from "@/app/lib/data";
 import UserBar from "./userbar";
 import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
 
-const ChannelList = (props: { mutate: Function }) => {
+const ChannelList = () => {
   const { user } = useUser();
   const dispatch = useDispatch();
   const selectedServerInfo = useSelector(
@@ -48,7 +46,7 @@ const ChannelList = (props: { mutate: Function }) => {
             <></>
           ) : (
             <button
-              className=" bg-gray-600 text-lg px-2 rounded-full mx-auto mb-2 block"
+              className=" bg-gray-500 text-md px-2 rounded-md mx-auto mb-2 block"
               onClick={() => setCreateChannel(true)}
             >
               Create Channel
@@ -57,11 +55,7 @@ const ChannelList = (props: { mutate: Function }) => {
           <UserBar />
         </div>
       </div>
-      <CreateChannel
-        open={createChannel}
-        setDialog={setCreateChannel}
-        mutate={props.mutate}
-      />
+      <CreateChannel open={createChannel} setDialog={setCreateChannel} />
     </>
   );
 };

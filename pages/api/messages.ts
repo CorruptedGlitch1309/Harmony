@@ -9,7 +9,9 @@ async function fetchServers(channel_id: string) {
             `SELECT messages.user_id, messages.message, users.username, users."icon-url"
             FROM messages 
             INNER JOIN users ON messages.user_id = users.user_id
-            WHERE messages.channel_id = '${channel_id}'`
+            WHERE messages.channel_id = '${channel_id}'
+            AND messages.hidden = 'false'
+            ORDER BY messages.xata_createdat`
         )).rows;
 
         client.release();

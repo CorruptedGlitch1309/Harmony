@@ -26,13 +26,18 @@ function MessageInput() {
         typeof="text"
         className="bg-gray-200 w-full h-10 p-2 rounded-md"
         onKeyDown={(e) => {
-          if (e.key != "Enter" || e.shiftKey) return;
           const input = document.getElementById(
             "message-input"
           ) as HTMLTextAreaElement;
           const message = input.value;
 
-          if (message == "") return;
+          if (
+            e.key != "Enter" ||
+            e.shiftKey ||
+            selectedChannel == "none" ||
+            message == ""
+          )
+            return setTimeout(() => (input.value = ""), 10);
 
           postMessage({
             user_id: user?.id,
